@@ -1,0 +1,68 @@
+<html>
+<body style=’font-size:40px’>
+<div id=lockeddiv style=’font-style:italic’></div>
+<div id=messagediv style=’font-style:italic’>Apretá acá 😃</div>
+<script>
+var music = new Audio(“http://curtastic.com/nightmare.mp3")
+var chime = new Audio(“http://curtastic.com/gold.wav")
+var nothing = new Audio(“http://touchbasicapp.com/nothing.wav")
+var allAudio = []
+allAudio.push(music)
+allAudio.push(chime)
+
+var tapped = function() {
+messagediv.innerHTML = “tapped”
+
+// Play all audio files on the first tap and stop them immediately.
+if(allAudio) {
+for(var audio of allAudio) {
+audio.play()
+audio.pause()
+audio.currentTime = 0
+}
+allAudio = null
+}
+
+// We should be able to play music delayed now (not during the tap event).
+messagediv.innerHTML = “Music starts in 2 seconds…”
+setTimeout(function() {
+messagediv.innerHTML = “Music playing. <button onclick=’stop()’>Stop</button>”
+music.play()
+}, 2000)
+
+}
+document.body.addEventListener(‘touchstart’, tapped, false)
+document.body.addEventListener(‘click’, tapped, false)
+
+var stop = function() {
+music.pause()
+loop = null
+document.body.removeEventListener(‘touchstart’, tapped, false)
+document.body.removeEventListener(‘click’, tapped, false)
+}
+
+// Check if audio starts already unlocked by playing a blank wav.
+nothing.play().then(function() {
+lockeddiv.innerHTML = “Audio started unlocked!”
+}).catch(function(){
+lockeddiv.innerHTML = “Audio started locked :(“
+})
+
+var loop = function() {
+// Try to play chimes whenever we want (not during user action).
+if(Math.random() < .01) {
+chime.play().then(function(){
+lockeddiv.innerHTML = “Audio is now unlocked!”
+})
+}
+setTimeout(loop, 16)
+}
+loop()
+</script>
+<div style=’height:70vh;background:#EFE’>
+The rest of the webpage takes up all of this space.
+On Safari audio will start on the first tap anywhere.
+On Chrome it will try to determine if the user has interacted much with this page or this domain, before playing.
+</div>
+</body>
+</html>
