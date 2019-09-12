@@ -1,22 +1,6 @@
 <html>
-<body style=’font-size:40px’>
-<div id=lockeddiv style=’font-style:italic’></div>
-<div id=messagediv style=’font-style:italic’>Apretá acá 😃</div>
-<script>
+<audio controls>
+  <source src="/ed-sheeran-afire-love.mp3">
+</audio>
   
-  function initAudio() {
-    var audio = new Audio('./path/to/my/sound.mp3');
-    audio.addEventListener('play', function () {
-        // When the audio is ready to play, immediately pause.
-        audio.pause();
-        audio.removeEventListener('play', arguments.callee, false);
-    }, false);
-    document.addEventListener('click', function () {
-        // Start playing audio when the user clicks anywhere on the page,
-        // to force Mobile Safari to load the audio.
-        document.removeEventListener('click', arguments.callee, false);
-        audio.play();
-    }, false);
-}
-</script>
 </html>
